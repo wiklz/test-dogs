@@ -19,9 +19,6 @@ export default {
       msg: 'Breed list'
     }
   },
-  mounted () {
-    this.$store.dispatch('loadBreedslist')
-  },
   computed: mapState(['breeds'])
 }
 </script>

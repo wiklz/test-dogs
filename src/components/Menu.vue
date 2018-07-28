@@ -1,10 +1,14 @@
 <template>
 <div class="menu">
-  <button class="menu-btn" @click="menuOpen = !menuOpen">Menu</button>
-  <ul v-show="menuOpen">
-    <li><router-link to="/">Home</router-link></li>
-    <li><a href="#">Breeds</a></li>
-    <li><router-link to="/favorites">Favourites</router-link></li>
+  <button class="menu-btn" @click="(menuOpen = !menuOpen) || (submenuOpen = false)">Menu</button>
+  <ul class="list" v-show="menuOpen">
+    <li><router-link class="menu-link" to="/">Home</router-link></li>
+    <li><span class="menu-link" @click="submenuOpen = !submenuOpen">Breeds</span>
+      <ul class="sub-list" v-show="submenuOpen">
+        <li :key="breed.name" v-for="breed in breeds"><router-link v-bind:to="'/breed/' + breed.id">{{breed.name}}</router-link></li>
+      </ul>
+    </li>
+    <li><router-link class="menu-link" to="/favorites">Favourites</router-link></li>
   </ul>
 </div>
 </template>
@@ -14,8 +18,13 @@ export default {
   name: 'Menu',
   data () {
     return {
-      menuOpen: false
+      menuOpen: false,
+      submenuOpen: false,
+      breeds: []
     }
+  },
+  mounted () {
+    this.breeds = this.$store.state.breeds
   }
 }
 </script>
@@ -39,7 +48,7 @@ export default {
      margin: auto 25px;
      padding: 5px 10px;
    }
-  ul{
+  .list{
     padding: 10px 20px;
     background: #2c3e50;
     display: flex;
@@ -49,11 +58,19 @@ export default {
     left: 0;
     list-style: none;
   }
-  li{
+  .list li{
     margin: 20px 15px;
   }
-  a{
+  .menu-link{
     color: #ffffff;
     text-decoration: none;
+    cursor: pointer;
+  }
+  .sub-list{
+    color: #ffffff;
+    list-style: none;
+  }
+  .sub-list li{
+    text-transform: capitalize;
   }
 </style>
