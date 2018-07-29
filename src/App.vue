@@ -12,7 +12,7 @@ export default {
     'top-menu': Menu
   },
   name: 'App',
-  mounted () {
+  created () {
     this.$store.dispatch('loadBreedslist')
   }
 }

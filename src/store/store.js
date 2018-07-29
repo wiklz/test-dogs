@@ -17,6 +17,12 @@ export const store = new Vuex.Store({
         .then(breeds => {
           commit('SET_BREEDS', breeds)
         })
+      axios
+        .get('https://images.dog.ceo/breeds/hound-afghan/n02088094_1023.jpg')
+        .then(r => r.data)
+        .then(images => {
+          commit('SET_IMAGES', images)
+        })
     }
   },
   mutations: {

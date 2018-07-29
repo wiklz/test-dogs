@@ -2,13 +2,13 @@
 <div class="menu">
   <button class="menu-btn" @click="(menuOpen = !menuOpen) || (submenuOpen = false)">Menu</button>
   <ul class="list" v-show="menuOpen">
-    <li><router-link class="menu-link" to="/">Home</router-link></li>
+    <li @click="(menuOpen = false) || (submenuOpen = false)"><router-link class="menu-link" to="/">Home</router-link></li>
     <li><span class="menu-link" @click="submenuOpen = !submenuOpen">Breeds</span>
       <ul class="sub-list" v-show="submenuOpen">
-        <li :key="breed.name" v-for="breed in breeds"><router-link v-bind:to="'/breed/' + breed.id">{{breed.name}}</router-link></li>
+        <li :key="breed.name" v-for="breed in breeds"><router-link class="menu-link" v-bind:to="'/breed/' + breed.id">{{breed.name}}</router-link></li>
       </ul>
     </li>
-    <li><router-link class="menu-link" to="/favorites">Favourites</router-link></li>
+    <li @click="(menuOpen = false) || (submenuOpen = false)"><router-link class="menu-link" to="/favorites">Favourites</router-link></li>
   </ul>
 </div>
 </template>

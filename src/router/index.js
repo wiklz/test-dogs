@@ -21,6 +21,10 @@ export default new Router({
     {
       path: '/breed/:id',
       component: BreedPage
+      // beforeRouteUpdate: (to, from, next) => {
+      //   console.log('entering', to.params.id)
+      //   next()
+      // }
     }
   ]
 })
