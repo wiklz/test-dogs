@@ -7,13 +7,14 @@
 
 <script>
 import Menu from './components/Menu'
+
 export default {
   components: {
     'top-menu': Menu
   },
   name: 'App',
-  created () {
-    this.$store.dispatch('loadBreedslist')
+  mounted () {
+    this.$store.dispatch('loadBreedsList')
   }
 }
 </script>

@@ -5,7 +5,7 @@
     <li @click="(menuOpen = false) || (submenuOpen = false)"><router-link class="menu-link" to="/">Home</router-link></li>
     <li><span class="menu-link" @click="submenuOpen = !submenuOpen">Breeds</span>
       <ul class="sub-list" v-show="submenuOpen">
-        <li :key="breed.name" v-for="breed in breeds"><router-link class="menu-link" v-bind:to="'/breed/' + breed.id">{{breed.name}}</router-link></li>
+        <li :key="breed.id" v-for="breed in breeds" @click="(breedId = breed.id)"><router-link class="menu-link" v-bind:to="'/breed/' + breed.id">{{breed.name}}</router-link></li>
       </ul>
     </li>
     <li @click="(menuOpen = false) || (submenuOpen = false)"><router-link class="menu-link" to="/favorites">Favourites</router-link></li>
@@ -20,11 +20,13 @@ export default {
     return {
       menuOpen: false,
       submenuOpen: false,
-      breeds: []
+      breedId: null
     }
   },
-  mounted () {
-    this.breeds = this.$store.state.breeds
+  computed: {
+    breeds () {
+      return this.$store.state.breeds
+    }
   }
 }
 </script>

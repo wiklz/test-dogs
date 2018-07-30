@@ -1,33 +1,21 @@
 <template>
   <div id="breed" class="breed-container">
-    <h1 class="title">{{breed}}</h1>
-    <h2 class="">{{id}}</h2>
+    <h1 class="title">{{breed.name}}</h1>
+    <h2 class="title">{{breed.id}}</h2>
   </div>
 </template>
 
 <script>
 export default {
   name: 'BreedPage',
-  data () {
-    return {
-      id: null,
-      breed: null
+  computed: {
+    breed () {
+      return this.$store.state.breeds[this.$route.params.id]
     }
   },
-  mounted () {
-    this.breed = this.$store.state.breedsList[this.$route.params.id]
-    // console.log(this.$route.params.id)
-  },
-  /* Called when this component is reused.
-Here we have a chance to update the component
-since mounted() and other life-cycle hooks won't be called
-when a component is reused. */
   beforeRouteUpdate (to, from, next) {
-    this.breed = ''
     next()
-    // console.log(this.$route.params.id)
-    this.breed = this.$store.state.breedsList[this.$route.params.id]
-    // console.log(this.$store.state.breeds)
+    return this.$store.state.breeds[this.$route.params.id]
   }
 }
 </script>
@@ -38,5 +26,10 @@ when a component is reused. */
   }
   .title{
     text-transform: capitalize;
+  }
+  img{
+    width: auto;
+    height: 200px;
+    margin: 15px;
   }
 </style>

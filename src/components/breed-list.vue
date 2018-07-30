@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 export default {
   name: 'BreedList',
   data () {
@@ -19,7 +18,11 @@ export default {
       msg: 'Breed list'
     }
   },
-  computed: mapState(['breeds'])
+  computed: {
+    breeds () {
+      return this.$store.state.breeds
+    }
+  }
 }
 </script>
 
@@ -27,5 +30,6 @@ export default {
 .breed{
   display: inline-block;
   margin: 50px;
+  text-transform: capitalize;
 }
 </style>
