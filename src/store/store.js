@@ -7,8 +7,7 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     breeds: [],
-    displayedBreed: null,
-    loaded: false
+    displayedBreed: null
   },
   actions: {
     // ****** LOADING BREEDS LIST ******

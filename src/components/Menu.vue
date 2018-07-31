@@ -4,6 +4,10 @@
   <ul class="list" v-show="menuOpen">
     <li @click="(menuOpen = false) || (submenuOpen = false)"><router-link class="menu-link" to="/">Home</router-link></li>
     <li><span class="menu-link" @click="submenuOpen = !submenuOpen">Breeds</span>
+      <select v-on:change="sortBy" name="breed-select" id="breed-select">
+        <option value="Make your choice" selected disabled>Make your choice</option>
+        <option :key="breed.id" :value="breed.id" v-for="breed in breeds">{{breed.name}}</option>
+      </select>
       <ul class="submenu">
         <li :key="breed.id" v-for="breed in breeds" v-show="submenuOpen" @click="$store.dispatch('pageChange', { id: breed.id })"><router-link class="menu-link" :to="'/breed/' + breed.id">{{breed.name}}</router-link></li>
       </ul>
@@ -20,6 +24,11 @@ export default {
     return {
       menuOpen: false,
       submenuOpen: false
+    }
+  },
+  methods: {
+    sortBy: function (e) {
+      this.$store.dispatch('pageChange', { id: e.target.value })
     }
   },
   computed: {
