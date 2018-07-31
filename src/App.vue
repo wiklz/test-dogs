@@ -12,8 +12,7 @@ export default {
   components: {
     'top-menu': Menu
   },
-  name: 'App',
-  mounted () {
+  beforeCreate () {
     this.$store.dispatch('loadBreedsList')
   }
 }

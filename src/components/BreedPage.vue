@@ -1,7 +1,7 @@
 <template>
   <div id="breed" class="breed-container">
     <h1 class="title">{{breed.name}}</h1>
-    <h2 class="title">{{breed.id}}</h2>
+    <img :src="breed.images[0][1]" alt="">
   </div>
 </template>
 
@@ -10,12 +10,12 @@ export default {
   name: 'BreedPage',
   computed: {
     breed () {
-      return this.$store.state.breeds[this.$route.params.id]
+      return this.$store.state.breeds[this.$store.state.displayedBreed]
     }
   },
   beforeRouteUpdate (to, from, next) {
     next()
-    return this.$store.state.breeds[this.$route.params.id]
+    return this.$store.state.breeds[this.$store.state.displayedBreed]
   }
 }
 </script>
