@@ -1,19 +1,17 @@
 <template>
 <div class="menu">
-  <button class="menu-btn" @click="(menuOpen = !menuOpen) || (submenuOpen = false)">Menu</button>
-  <ul class="list" v-show="menuOpen">
-    <li @click="(menuOpen = false) || (submenuOpen = false)"><router-link class="menu-link" to="/">Home</router-link></li>
+  <ul class="list">
+    <li><router-link class="menu-link" to="/">Home</router-link></li>
+    <li><router-link class="menu-link" to="/favorites">Favourites</router-link></li>
     <li>
       <label for="breed-select">
-        <span class="menu-link">Breeds</span>
+        <span>Breeds</span>
       </label>
-      <br>
-      <select v-on:change="sortBy" name="breed-select" id="breed-select">
-        <option value="Make your choice" selected disabled>Make your choice</option>
-        <option :key="breed.id" :value="breed.id" v-for="breed in breeds">{{breed.name}}</option>
+      <select @change="selectChange" name="breed-select" id="breed-select">
+        <option :value="null" selected></option>
+        <option :value="breed" v-for="breed in breeds" :key="breed.id">{{breed}}</option>
       </select>
     </li>
-    <li @click="(menuOpen = false) || (submenuOpen = false)"><router-link class="menu-link" to="/favorites">Favourites</router-link></li>
   </ul>
 </div>
 </template>
@@ -21,20 +19,14 @@
 <script>
 export default {
   name: 'Menu',
-  data () {
-    return {
-      menuOpen: false,
-      submenuOpen: false
+  computed: {
+    breeds () {
+      return this.$store.getters.getBreeds
     }
   },
   methods: {
-    sortBy: function (e) {
-      this.$store.dispatch('pageChange', { id: e.target.value })
-    }
-  },
-  computed: {
-    breeds () {
-      return this.$store.state.breeds
+    selectChange: function (e) {
+      this.$store.dispatch('selectChange', { breed: e.target.value })
     }
   }
 }
@@ -44,39 +36,43 @@ export default {
   .menu{
     background: #2c3e50;
     margin: 0;
-    height: 50px;
-    /*width: 100vw;*/
+    height: 60px;
     display: flex;
-    width: 100%;
   }
-   .menu-btn{
-     font-size: 16px;
-     background: #ffffff;
-     border: none;
-     border-radius: 5px;
-     color: #2c3e50;
-     cursor: pointer;
-     margin: auto 25px;
-     padding: 5px 10px;
-   }
   .list{
     padding: 10px 20px;
-    background: #2c3e50;
     display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 30px;
-    left: 0;
+    flex-direction: row;
+    justify-content: space-around;
     list-style: none;
-    z-index: 1;
+    width: 50%;
+    margin: auto;
+    text-align: center;
   }
   .list li{
-    margin: 20px 15px;
+    margin: auto;
+  }
+  .list li{
+    margin: auto;
+    color: #ffffff;
+    text-transform: capitalize;
   }
   .menu-link {
     color: #ffffff;
     text-decoration: none;
     cursor: pointer;
     text-transform: capitalize;
+  }
+  .list select{
+    margin: auto 15px;
+    border-radius: 5px;
+  }
+  .list select, .list select option{
+    text-transform: capitalize;
+    text-align: center;
+    border: none;
+    padding: 2px 5px;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    color: #2c3e50;
   }
 </style>

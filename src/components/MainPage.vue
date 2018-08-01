@@ -1,15 +1,16 @@
 <template>
   <div class="main">
-    <h1>{{ msg }}</h1>
+    <Head/>
     <BreedList/>
   </div>
 </template>
 
 <script>
+import Head from './Head'
 import BreedList from './breed-list'
 export default {
   name: 'MainPage',
-  components: {BreedList},
+  components: {Head, BreedList},
   data () {
     return {
       msg: 'Welcome to Vue.js'
@@ -19,7 +20,4 @@ export default {
 </script>
 
 <style scoped>
-  .main{
-    text-align: center;
-  }
 </style>
