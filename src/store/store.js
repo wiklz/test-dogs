@@ -28,7 +28,7 @@ export const store = new Vuex.Store({
       // console.log(subBreeds.length)
       return subBreeds
     },
-    randomImages: function (state) {
+    setImages: function (state) {
       if (state.sortedImages.length === 20) {
         return state.sortedImages
       }
@@ -46,6 +46,19 @@ export const store = new Vuex.Store({
     },
     selectChange ({ commit }, breed) {
       commit('selectChange', breed.breed)
+    },
+    singleBreedImages ({ commit, state }, breed) {
+      state.sortedImages = []
+      for (let i = 0; i < 20; i++) {
+        let str = breed.breed.toString()
+        str = str.replace(/\s/g, '/')
+        axios
+          .get('https://dog.ceo/api/breed/' + str + '/images/random')
+          .then(r => r.data)
+          .then(breed => {
+            commit('SORT_IMAGES', breed.message)
+          })
+      }
     },
     initialSort ({ commit, state }) {
       state.sortedImages = []
@@ -106,6 +119,7 @@ export const store = new Vuex.Store({
       let str = breed.toString()
       str = str.replace(/\s/g, '-')
       router.push({path: '/' + str})
+      state.displayedBreed = breed
     }
   }
 })
