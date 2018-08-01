@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import router from './../router'
 
 Vue.use(Vuex)
 
@@ -21,9 +22,6 @@ export const store = new Vuex.Store({
     },
     pageChange ({ commit, state }, id) {
       commit('breedChange', id)
-    },
-    setBreedPage ({ commit, state }, route) {
-      commit('pageCalculate', route)
     }
   },
   mutations: {
@@ -61,9 +59,7 @@ export const store = new Vuex.Store({
     },
     breedChange (state, { id }) {
       state.displayedBreed = id
-    },
-    pageCalculate (state, { route }) {
-      state.displayedBreed = route
+      router.push({ path: '/' + id })
     }
   }
 })

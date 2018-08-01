@@ -4,7 +4,7 @@
     <div class="breeds-container">
       <div class="breed" :key="breed.id" v-for="breed in breeds" @click="$store.dispatch('pageChange', { id: breed.id })">
         <h3>{{breed.name}}</h3>
-        <router-link :to="'/breed/' + breed.id">
+        <router-link :to="'/' + breed.id">
           <img :src="breed.images[0][0]" :alt="breed.id" v-if="breed.images[0]">
         </router-link>
       </div>

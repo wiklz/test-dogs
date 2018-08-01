@@ -19,7 +19,7 @@ export default new Router({
       component: FavouritesPage
     },
     {
-      path: '/breed/:id',
+      path: '/:id',
       component: BreedPage
     }
   ]
