@@ -15,6 +15,9 @@ export default {
     return {
       msg: 'Welcome to Vue.js'
     }
+  },
+  beforeCreate () {
+    this.$store.dispatch('loadBreedsList')
   }
 }
 </script>

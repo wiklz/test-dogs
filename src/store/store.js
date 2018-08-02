@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import router from './../router'
+const STORAGE_KEY = 'favourites'
 
 Vue.use(Vuex)
 
@@ -10,7 +11,9 @@ export const store = new Vuex.Store({
     breeds: [],
     breedsNames: [],
     sortedImages: [],
-    displayedBreed: null
+    favourites: [],
+    displayedBreed: null,
+    bottom: false
   },
   getters: {
     getBreeds: function (state) {
@@ -29,12 +32,19 @@ export const store = new Vuex.Store({
       return subBreeds
     },
     setImages: function (state) {
-      if (state.sortedImages.length === 20) {
+      if (state.sortedImages.length >= 20) {
         return state.sortedImages
       }
+    },
+    getFavourites: function (state) {
+      return state.favourites
     }
   },
   actions: {
+    // ****** FORCING TO RESTART AT MAIN PAGE ******
+    mainPageLoader ({ commit }, route) {
+      commit('goHome', route)
+    },
     // ****** LOADING BREEDS LIST ******
     loadBreedsList ({ commit }) {
       axios
@@ -44,22 +54,11 @@ export const store = new Vuex.Store({
           commit('SET_BREEDS', breeds.message)
         })
     },
+    // ****** TOP SELECT CHANGES ******
     selectChange ({ commit }, breed) {
       commit('selectChange', breed.breed)
     },
-    singleBreedImages ({ commit, state }, breed) {
-      state.sortedImages = []
-      for (let i = 0; i < 20; i++) {
-        let str = breed.breed.toString()
-        str = str.replace(/\s/g, '/')
-        axios
-          .get('https://dog.ceo/api/breed/' + str + '/images/random')
-          .then(r => r.data)
-          .then(breed => {
-            commit('SORT_IMAGES', breed.message)
-          })
-      }
-    },
+    // ****** GETTING MAIN PAGE INITIAL IMAGES ******
     initialSort ({ commit, state }) {
       state.sortedImages = []
       for (let i = 0; i < 20; i++) {
@@ -67,10 +66,11 @@ export const store = new Vuex.Store({
           .get('https://dog.ceo/api/breeds/image/random')
           .then(r => r.data)
           .then(breed => {
-            commit('SORT_IMAGES', breed.message)
+            commit('ADD_IMAGE', breed.message)
           })
       }
     },
+    // ****** HANDLING CHANGING SORT BY BREED ON MAIN PAGE ******
     changeSort ({ commit, state }, breed) {
       state.sortedImages = []
       if (breed.breed !== 'all') {
@@ -81,7 +81,7 @@ export const store = new Vuex.Store({
             .get('https://dog.ceo/api/breed/' + str + '/images/random')
             .then(r => r.data)
             .then(breed => {
-              commit('SORT_IMAGES', breed.message)
+              commit('ADD_IMAGE', breed.message)
             })
         }
       } else {
@@ -90,13 +90,72 @@ export const store = new Vuex.Store({
             .get('https://dog.ceo/api/breeds/image/random')
             .then(r => r.data)
             .then(breed => {
-              commit('SORT_IMAGES', breed.message)
+              commit('ADD_IMAGE', breed.message)
             })
         }
       }
+    },
+    // ****** GETTING SINGLE BREED PAGE IMAGES ******
+    singleBreedImages ({ commit, state }, breed) {
+      state.sortedImages = []
+      for (let i = 0; i < 20; i++) {
+        let str = breed.breed.toString()
+        str = str.replace(/\s/g, '/')
+        axios
+          .get('https://dog.ceo/api/breed/' + str + '/images/random')
+          .then(r => r.data)
+          .then(breed => {
+            commit('ADD_IMAGE', breed.message)
+          })
+      }
+    },
+    // ****** ADDING IMAGES ******
+    addImages ({commit, state}, breed) {
+      if (breed !== 'all') {
+        for (let i = 0; i < 5; i++) {
+          let str = breed.toString()
+          str = str.replace(/\s/g, '/')
+          axios
+            .get('https://dog.ceo/api/breed/' + str + '/images/random')
+            .then(r => r.data)
+            .then(breed => {
+              commit('ADD_IMAGE', breed.message)
+            })
+        }
+      } else {
+        for (let i = 0; i < 20; i++) {
+          axios
+            .get('https://dog.ceo/api/breeds/image/random')
+            .then(r => r.data)
+            .then(breed => {
+              commit('ADD_IMAGE', breed.message)
+            })
+        }
+      }
+    },
+    // ****** ADDING IMAGES TO FAVOURITES(localStorage)******
+    addToFavourites ({ commit, state }, image) {
+      commit('ADD_TO_FAVOURITES', image.src)
+    },
+    // ****** GETTING IMAGES FROM FAVOURITES(localStorage)******
+    getFavourites ({ commit }) {
+      commit('GET_FAVOURITES')
+    },
+    // ****** REMOVE AN IMAGE FROM FAVOURITES(localStorage)******
+    removeFromFavourites ({ commit, state }, image) {
+      commit('REMOVE_FROM_FAVOURITES', image.src)
+    },
+    // ****** RESETS TOP SELECTOR AT CHANGING PAGE TO HOME OR FAVOURITES ******
+    clearTopSelect () {
+      let select = document.querySelector('#breed-select')
+      select.value = null
     }
   },
   mutations: {
+    goHome (state, route) {
+      route = route.toString()
+      route !== '/' && route !== '/favorites' ? router.push({path: '/'}) : console.log('building...')
+    },
     SET_BREEDS (state, breeds) {
       state.breeds = breeds
       state.breedsNames = Object.getOwnPropertyNames(breeds)
@@ -112,8 +171,19 @@ export const store = new Vuex.Store({
       //     })
       // }
     },
-    SORT_IMAGES (state, image) {
+    ADD_IMAGE (state, image) {
       state.sortedImages.push(image)
+    },
+    ADD_TO_FAVOURITES (state, image) {
+      state.favourites.push(image)
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.favourites))
+    },
+    GET_FAVOURITES (state) {
+      state.favourites = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
+    },
+    REMOVE_FROM_FAVOURITES (state, image) {
+      state.favourites.splice(state.favourites.indexOf(image), 1)
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.favourites))
     },
     selectChange (state, breed) {
       let str = breed.toString()

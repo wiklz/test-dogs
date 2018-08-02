@@ -13,7 +13,7 @@ export default {
     'top-menu': Menu
   },
   beforeCreate () {
-    this.$store.dispatch('loadBreedsList')
+    this.$store.dispatch('mainPageLoader', this.$route.path)
   }
 }
 </script>

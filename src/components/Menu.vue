@@ -1,8 +1,8 @@
 <template>
 <div class="menu">
   <ul class="list">
-    <li><router-link class="menu-link" to="/">Home</router-link></li>
-    <li><router-link class="menu-link" to="/favorites">Favourites</router-link></li>
+    <li @click="resetSelect"><router-link class="menu-link" to="/">Home</router-link></li>
+    <li @click="resetSelect"><router-link class="menu-link" to="/favorites">Favourites</router-link></li>
     <li>
       <label for="breed-select">
         <span>Breeds</span>
@@ -28,6 +28,9 @@ export default {
     selectChange: function (e) {
       this.$store.dispatch('selectChange', { breed: e.target.value })
       this.$store.dispatch('singleBreedImages', { breed: e.target.value })
+    },
+    resetSelect () {
+      this.$store.dispatch('clearTopSelect')
     }
   }
 }
