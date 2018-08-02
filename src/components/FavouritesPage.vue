@@ -3,8 +3,13 @@
     <h1>FavouritesPage</h1>
     <div class="breeds-list">
       <div class="images">
-        <div class="img-wrapper" v-for=" image in images" :key="image.id">
-          <img :src="image" alt="image" class="img" @click="removeFavourite">
+        <div class="wrapper" v-for=" image in images" :key="image.id">
+          <div class="img-wrapper">
+            <img :src="image" alt="image" class="img">
+          </div>
+          <div class="btn-wrapper">
+            <button class="removeBtn" @click="removeFavourite(image)">Remove</button>
+          </div>
         </div>
       </div>
     </div>
@@ -23,8 +28,8 @@ export default {
     }
   },
   methods: {
-    removeFavourite (e) {
-      this.$store.dispatch('removeFromFavourites', {src: e.target.src})
+    removeFavourite (image) {
+      this.$store.dispatch('removeFromFavourites', {src: image})
     }
   }
 }
@@ -41,12 +46,39 @@ h1{
   text-align: center;
   margin: auto;
 }
+.wrapper{
+  display: inline-block;
+  text-align: center;
+  margin: 10px;
+}
+.wrapper:hover img{
+  opacity: .5;
+}
+.wrapper:hover button{
+  opacity: 1;
+}
 .img-wrapper{
   display: inline-block;
-  margin: 10px;
   height: 250px;
 }
 img{
   height: 100%;
+  border-radius: 5px;
+  transition: opacity .3s ease-in-out;
+}
+.btn-wrapper{
+  height: 0;
+  position: relative;
+  bottom: 50px;
+}
+.removeBtn {
+  opacity: 0;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: darkred;
+  color: #ffffff;
+  cursor: pointer;
+  transition: opacity .3s ease-in-out;
 }
 </style>
