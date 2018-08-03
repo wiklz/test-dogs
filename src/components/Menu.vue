@@ -25,7 +25,7 @@ export default {
     }
   },
   methods: {
-    selectChange: function (e) {
+    selectChange (e) {
       this.$store.dispatch('selectChange', { breed: e.target.value })
       this.$store.dispatch('singleBreedImages', { breed: e.target.value })
     },

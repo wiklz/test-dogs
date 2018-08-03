@@ -135,7 +135,7 @@ export const store = new Vuex.Store({
     },
     // ****** ADDING IMAGES TO FAVOURITES(localStorage)******
     addToFavourites ({ commit, state }, image) {
-      commit('ADD_TO_FAVOURITES', image.src)
+      commit('ADD_TO_FAVOURITES', image)
     },
     // ****** GETTING IMAGES FROM FAVOURITES(localStorage)******
     getFavourites ({ commit }) {
@@ -149,22 +149,6 @@ export const store = new Vuex.Store({
     clearTopSelect () {
       let select = document.querySelector('#breed-select')
       select.value = null
-    },
-    // ****** CHECK IF localStorage HAS THE IMAGE******
-    checkLocalStorage ({ state }, image) {
-      let response = 'visible'
-      if (state.favourites.length > 0) {
-        for (let i = 0; i < state.favourites.length; i++) {
-          if (state.favourites[i] === image) {
-            response = true
-          } else {
-            response = false
-          }
-        }
-      } else {
-        response = false
-      }
-      console.log(response)
     }
   },
   mutations: {
@@ -191,8 +175,12 @@ export const store = new Vuex.Store({
       state.sortedImages.push(image)
     },
     ADD_TO_FAVOURITES (state, image) {
-      state.favourites.push(image)
+      state.favourites.push(image.src)
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state.favourites))
+      image.btn.setAttribute('disabled', true)
+      image.btn.classList.add('disabled')
+      image.btn.innerText = 'Added'
+      image.btn.style.backgroundColor = 'darkgreen'
     },
     GET_FAVOURITES (state) {
       state.favourites = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')

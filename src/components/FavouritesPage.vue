@@ -28,6 +28,9 @@ export default {
     removeFavourite (image) {
       this.$store.dispatch('removeFromFavourites', {src: image})
     }
+  },
+  beforeCreate () {
+    this.$store.dispatch('loadBreedsList')
   }
 }
 </script>

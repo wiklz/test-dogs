@@ -6,7 +6,7 @@
           <img :src="image" alt="image" class="img">
         </div>
         <div class="btn-wrapper">
-          <button class="addBtn" @click="addToFavourites(image)">Add</button>
+          <button class="addBtn" @click="addToFavourites(image, $event)">Add</button>
         </div>
       </div>
     </div>
@@ -32,8 +32,8 @@ export default {
     })
   },
   methods: {
-    addToFavourites (image) {
-      this.$store.dispatch('addToFavourites', { src: image })
+    addToFavourites (image, e) {
+      this.$store.dispatch('addToFavourites', { src: image, btn: e.target })
     },
     loadMore (breed) {
       this.$store.dispatch('addImages', breed)
@@ -105,4 +105,7 @@ export default {
     cursor: pointer;
     transition: opacity .3s ease-in-out;
   }
+  /*button.addBtn.disabled {*/
+    /*background-color: darkgreen;*/
+  /*}*/
 </style>
