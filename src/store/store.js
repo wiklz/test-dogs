@@ -149,6 +149,22 @@ export const store = new Vuex.Store({
     clearTopSelect () {
       let select = document.querySelector('#breed-select')
       select.value = null
+    },
+    // ****** CHECK IF localStorage HAS THE IMAGE******
+    checkLocalStorage ({ state }, image) {
+      let response = 'visible'
+      if (state.favourites.length > 0) {
+        for (let i = 0; i < state.favourites.length; i++) {
+          if (state.favourites[i] === image) {
+            response = true
+          } else {
+            response = false
+          }
+        }
+      } else {
+        response = false
+      }
+      console.log(response)
     }
   },
   mutations: {

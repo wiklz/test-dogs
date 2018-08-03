@@ -19,9 +19,6 @@
 <script>
 export default {
   name: 'FavouritesPage',
-  mounted () {
-    this.$store.dispatch('getFavourites')
-  },
   computed: {
     images () {
       return this.$store.getters.getFavourites

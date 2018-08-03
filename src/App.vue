@@ -14,6 +14,7 @@ export default {
   },
   beforeCreate () {
     this.$store.dispatch('mainPageLoader', this.$route.path)
+    this.$store.dispatch('getFavourites')
   }
 }
 </script>

@@ -5,7 +5,7 @@
           <div class="img-wrapper">
             <img :src="image" alt="image" class="img">
           </div>
-          <div class="btn-wrapper">
+          <div class="btn-wrapper" :class="check(image)">
             <button class="addBtn" @click="addToFavourites(image)">Add</button>
           </div>
         </div>
@@ -33,6 +33,7 @@ export default {
   },
   methods: {
     addToFavourites (image) {
+      console.log(image)
       this.$store.dispatch('addToFavourites', { src: image })
     },
     loadMore (breed) {
@@ -40,10 +41,13 @@ export default {
     },
     bottomVisible () {
       const scrollY = window.scrollY
-      const visible = document.documentElement.clientHeight * 1.75
+      const visible = document.documentElement.clientHeight
       const pageHeight = document.documentElement.scrollHeight
       const bottomOfPage = visible + scrollY >= pageHeight
       return bottomOfPage || pageHeight < visible
+    },
+    check (image) {
+      this.$store.dispatch('checkLocalStorage', image)
     }
   },
   watch: {
