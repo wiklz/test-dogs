@@ -159,17 +159,6 @@ export const store = new Vuex.Store({
     SET_BREEDS (state, breeds) {
       state.breeds = breeds
       state.breedsNames = Object.getOwnPropertyNames(breeds)
-      // ****** CREATING BREEDS` NAMES AND LINKS TO REQUEST IMAGES LATER ******
-      // ****** SETTING UP BREEDS` IDs AND IMAGES LINKS ******
-      // for (let i = 0; i < state.breeds.length; i++) {
-      //   state.breeds[i].id = i
-      //   axios
-      //     .get(state.breeds[i].imageSrc)
-      //     .then(r => r.data)
-      //     .then(imagesSrc => {
-      //       state.breeds[i].images.push(imagesSrc.message)
-      //     })
-      // }
     },
     ADD_IMAGE (state, image) {
       state.sortedImages.push(image)
